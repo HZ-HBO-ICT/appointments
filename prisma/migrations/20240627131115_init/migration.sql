@@ -1,0 +1,29 @@
+-- CreateTable
+CREATE TABLE "Appointment" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "state" TEXT NOT NULL DEFAULT 'pending',
+    "name" TEXT NOT NULL,
+    "breed" TEXT NOT NULL,
+    "timeslotId" INTEGER NOT NULL,
+    "theDateId" INTEGER NOT NULL,
+    CONSTRAINT "Appointment_timeslotId_fkey" FOREIGN KEY ("timeslotId") REFERENCES "Timeslot" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Appointment_theDateId_fkey" FOREIGN KEY ("theDateId") REFERENCES "TheDate" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Timeslot" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "starttime" TEXT NOT NULL,
+    "duration" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "TheDate" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "day" INTEGER NOT NULL,
+    "month" INTEGER NOT NULL,
+    "year" INTEGER NOT NULL
+);
