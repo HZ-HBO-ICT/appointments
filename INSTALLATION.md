@@ -1,4 +1,4 @@
-# Installing TypeScript
+# Installing This TypeScript Application
 
 This is a skeleton app for people who want to use TypeScript in ExpressJS. A docker-compose file is included for those who want to run it in a container.
 
@@ -16,8 +16,6 @@ Make sure you have [NodeJS](https://nodejs.org/en/download/) installed (preferab
 1. Clone or download this repository to your computer
 2. Open a terminal in the project directory.
 3. Install the dependencies by running `npm install`.
-4. Compile the project by running `npm run build`. If you want to run the build script everytime you make changes automatically, you can use `npm run watch`.
-5. Run the application. You cannot just open the `index.html` file (see the following section). If everything worked properly, you should see "Hello World" printed to the document. 
 
 ## Recommended VS Code Extension
  - To use the provided `.editorconfig` file, install the [EditorConfig](https://editorconfig.org/#download) plugin.
@@ -35,37 +33,39 @@ If you're like me and you dislike NodeJS and NPM piling up heaps of folders on y
 6. Follow the steps from [Instructions](#instructions) from step 4, but prefix all the commands with `docker-compose exec ts-app`.
 7. Close the docker container by pressing `ctrl` + `c` or `docker-compose down`, respectively for step 5
 
-# Running the project
+## Running the project
 
-Running 
-In the package.json you can see which commands (in scripts) are used to run or build the server.
+In the package.json you can see which commands (in scripts) are used to run or build the server. If you are using docker please keep in mind that you will have to use `docker-compose exec ts-app` to execute the scripts.
 
 - `npm run dev`: in the dev environment we use this command to actually compile the TS code
-- `npm run build`: before the dev environment becomes the production environment we use this command
 - `npm run start`: in production we use this command the start a server in production
-- `npm run start_ts`: in development we use this command the start a server with typescript files
 
 One note on running the command `npm run start`. We use nodemon to monitor the node server and to restart the server automatically. If we use `node start.js` we have to restart the server ourselves. You could install the nodemon package globally, but in this repo we installed it locally.
 
-## Modules
+## Design choices
+
+### Modules
 
 We use ES6 module system to import and export modules.
 
-## Variables.env
+### Variables.env
 
 We save credentials to other services in a `variables.env` file. This file is included in this template. However, it is common use not to include it in a public repository. There are some default key value pairs included to demonstrate its working.
 
-## Ports
+### Ports
 
 You can change the ports of your server via `variables.env`
 
-## Run TS directly via Nodemon
+### Run TS directly via Nodemon
 
 We choose to compile TS to JS and run the compiled JS to test it. However it is possible to run typescript in express [Nodemon and TS](https://blog.logrocket.com/configuring-nodemon-with-typescript/)
 
 For setting up the TS we used this [source](https://betterstack.com/community/guides/scaling-nodejs/nodejs-typescript/#step-2-installing-and-configuring-typescript)
 
-## Database connectivity
-In this project [Prisma](https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma) is used for Object Relation Mapping. It comes with all kind of utilities as models, seeds and migrationd
+### Database connectivity
+In this project [Prisma](https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma) is used for Object Relation Mapping. It comes with all kind of utilities as models, seeds and migration.
 
-SQLite studio
+### SQLite studio
+Use [sqlite](https://sqlitestudio.pl) studio to check database changes.
+
+## Help
