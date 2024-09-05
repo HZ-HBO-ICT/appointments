@@ -69,3 +69,4 @@ In this project [Prisma](https://www.prisma.io/docs/orm/overview/introduction/wh
 Use [sqlite](https://sqlitestudio.pl) studio to check database changes.
 
 ## Help
+Prijs?

@@ -4,6 +4,7 @@ import * as Dotenv from 'dotenv';
 Dotenv.config({ path: '.env' });
 import IndexRouter from './routes/index.js';
 import { errorHandler } from './middleware/errors/errorHandler.js';
+import Cors from 'cors';
 
 const app: Application = Express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3010;
@@ -13,6 +14,8 @@ app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 
 app.use('/', IndexRouter);
+
+app.use(Cors());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   try {
