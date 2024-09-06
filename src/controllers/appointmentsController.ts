@@ -12,7 +12,7 @@ interface AppointmentResponse {
     title: string
     url: string
   },
-  data: Appointment[]
+  data: string[]
 }
 
 /**
@@ -29,6 +29,7 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
    */
 
   /**
+   * TODO: refactor this code to make it more readable
    * Step 1 - are the query parameters present?
    * Step 2 - if they are present, convert them to numbers
    * Step 3 - use the numbers to filter the appointments
@@ -76,6 +77,7 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
     appointments = await prisma.appointment.findMany();
   }
 
+  const appointmentIds: string[] = appointments.map((appointment: Appointment) => `/api/v1/appointments/${appointment.id}`);
   //reponse
   const appointmentResponse: AppointmentResponse = {
     meta: {
@@ -83,7 +85,7 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
       title: 'All appointments',
       url: req.url
     },
-    data: appointments
+    data: appointmentIds
   };
   res.status(200).send(appointmentResponse);
 }
@@ -116,3 +118,22 @@ async function getApppointmentsByMonth(month: number): Promise<Appointment[]> {
   return appointments;
 }
 
+/**
+ * Get an appointment by ID.
+ * @param req {Request} - The Request object
+ * @param res {Response} - The Response object
+ * @returns {Promise<void>}
+ */
+export async function getApointmentById(req: Request, res: Response): Promise<void> {
+  const id: number = parseInt(req.params.id);
+  const appointment: Appointment | null = await prisma.appointment.findUnique({
+    where: {
+      id: id
+    }
+  });
+  if (appointment) {
+    res.status(200).send(appointment);
+  } else {
+    res.status(404).send('Appointment not found');
+  }
+};

@@ -7,13 +7,16 @@ This appointments micro service is part of larger whole, the veterinarian applic
 
 We will be using a `/api/v1/` base url.
 
-The following routes implemented
+The following routes are implemented
 |method|resource|description|
 |-|-|-|
 |GET|`/appointments/`|all the appointments in the database for the current year|
 |GET|`/appointments/:id`|a specific appointment|
 |GET|`/timeslots`|all the available timeslots|
 |GET|`/timeslots/:id`|a specific timeslot|
+|GET|`/dates/`|all the dates of the year|
+|GET|`/dates/id`|a specific date|
+
 
 For every request the following response is given
 
