@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { Appointment} from '../../prisma/types.ts';
+import { Appointment } from '../../prisma/types.ts';
 const prisma: PrismaClient = new PrismaClient();
 
 /**
@@ -22,7 +22,61 @@ interface AppointmentResponse {
  * @returns {Promise<void>}
  */
 export async function getAllApointments(req: Request, res: Response): Promise<void> {
-  const appointments: Appointment[] = await prisma.appointment.findMany();
+  /**
+   * working with query parameters is a bit tricky.
+   * You need to check if the query parameter exists and then convert it to a number
+   * However, you do not have control over the exact type of the query parameter
+   */
+
+  /**
+   * Step 1 - are the query parameters present?
+   * Step 2 - if they are present, convert them to numbers
+   * Step 3 - use the numbers to filter the appointments
+   */
+
+  let month: number = 0;
+  let day: number = 0;
+  let appointments: Appointment[];
+  console.log(req.query);
+
+  if (req.query.month && !req.query.day) {
+    const tempMonth: string = req.query.month.toString();
+    if (isNaN(Number(tempMonth))) {
+      res.status(400).send('Invalid query parameters');
+      return;
+    }
+    if (Number(tempMonth) < 1 || Number(tempMonth) > 12) {
+      res.status(400).send('Invalid month');
+      return;
+    }
+    month = Number(tempMonth);
+    appointments = await getApppointmentsByMonth(month);
+    console.log(`I found: ${month}`);
+  } else if (req.query.month && req.query.day) {
+    const tempMonth: string = req.query.month.toString();
+    const tempDay: string = req.query.day.toString();
+
+    if (isNaN(Number(tempMonth)) || isNaN(Number(tempDay))) {
+      res.status(400).send('Invalid query parameters');
+      return;
+    }
+    if (Number(tempMonth) < 1 || Number(tempMonth) > 12) {
+      res.status(400).send('Invalid month');
+      return;
+    }
+    if (Number(tempDay) < 1 || Number(tempDay) > 31) {
+      res.status(400).send('Invalid day');
+      return;
+    }
+    month = Number(tempMonth);
+    day = Number(tempDay);
+    appointments = await getApppointmentsByDay(month, day);
+    console.log(`I found: ${month} and ${day}`);
+  } else {
+    appointments = await prisma.appointment.findMany();
+  }
+
+  //reponse
   const appointmentResponse: AppointmentResponse = {
     meta: {
       count: appointments.length,
@@ -35,15 +89,7 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
 }
 
 
-/**
- * Function to get all appointments by day of the month
- * @param req {Request} - The Request object
- * @param res {Response} - The Response object
- * @returns {Promise<void>}
- */
-export async function getApppointmentsByDay(req: Request, res: Response): Promise<void> {
-  const month: number = Number(req.params.month);
-  const day: number = Number(req.params.day);
+async function getApppointmentsByDay(month: number, day: number): Promise<Appointment[]> {
   const appointments: Appointment[] = await prisma.appointment.findMany(
     {
       where: {
@@ -54,26 +100,10 @@ export async function getApppointmentsByDay(req: Request, res: Response): Promis
       }
     }
   );
-  const appointmentResponse: AppointmentResponse = {
-    meta: {
-      count: appointments.length,
-      title: 'All appointments by day',
-      url: req.url
-    },
-    data: appointments
-  };
-  res.status(200).send(appointmentResponse);
+  return appointments;
 }
 
-
-/**
- * Function to get all appointments per month
- * @param req {Request} - The Request object
- * @param res {Response} - The Response object
- * @returns {Promise<void>}
- */
-export async function getApppointmentsByMonth(req: Request, res: Response): Promise<void> {
-  const month: number = Number(req.params.month);
+async function getApppointmentsByMonth(month: number): Promise<Appointment[]> {
   const appointments: Appointment[] = await prisma.appointment.findMany(
     {
       where: {
@@ -83,14 +113,6 @@ export async function getApppointmentsByMonth(req: Request, res: Response): Prom
       }
     }
   );
-  const appointmentReponse: AppointmentResponse = {
-    meta: {
-      count: appointments.length,
-      title: 'All appointments by month',
-      url: req.url
-    },
-    data: appointments
-  };
-  res.status(200).send(appointmentReponse);
+  return appointments;
 }
 

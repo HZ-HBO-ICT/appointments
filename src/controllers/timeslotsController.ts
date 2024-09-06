@@ -12,7 +12,7 @@ interface TimeSlotResponse {
     title: string
     url: string
   },
-  data: TimeSlot[]
+  data: string[]
 }
 
 /**
@@ -23,13 +23,34 @@ interface TimeSlotResponse {
  */
 export async function getAllTimeSlots(req: Request, res: Response): Promise<void> {
   const timeslots: TimeSlot[] = await prisma.timeslot.findMany();
+  const timeSlotIds: string[] = timeslots.map((timeslot: TimeSlot) => `/appointments/${timeslot.id}`);
   const timeslotResponse: TimeSlotResponse = {
     meta: {
       count: timeslots.length,
       title: 'All appointments',
       url: req.url
     },
-    data: timeslots
+    data: timeSlotIds
   };
   res.status(200).send(timeslotResponse);
+}
+
+/**
+ * Function to get a time slot by ID
+ * @param req {Request} - The Request object
+ * @param res {Response} - The Response object
+ * @returns {Promise<void>}
+ */
+export async function getTimeSlotById(req: Request, res: Response): Promise<void> {
+  const id: number = parseInt(req.params.id);
+  const timeslot: TimeSlot | null = await prisma.timeslot.findUnique({
+    where: {
+      id: id
+    }
+  });
+  if (timeslot) {
+    res.status(200).send(timeslot);
+  } else {
+    res.status(404).send('Timeslot not found');
+  }
 }

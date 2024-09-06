@@ -1,21 +1,19 @@
 import Express, { Router } from 'express';
-import { getAllApointments, getApppointmentsByMonth, getApppointmentsByDay} from '../controllers/appointmentsController.ts';
-import { getAllTimeSlots } from '../controllers/timeslotsController.ts';
+import { getAllApointments } from '../controllers/appointmentsController.ts';
+import { getAllTimeSlots, getTimeSlotById } from '../controllers/timeslotsController.ts';
 const router: Router = Express.Router();
 import Cors from 'cors';
 
-
+const currentApiVersion: string = 'v1';
+const apiSlug: string = '/api/' + currentApiVersion;
 // router.get('/', (req: Request, res: Response, next: NextFunction) => {
 //   res.json('hi');
 //   next();
 // });
-router.get('/appointments', getAllApointments);
+router.get(`${apiSlug}/appointments`, Cors(), getAllApointments);
 
-// another way to implement is to use a query parameter to get the appointments by date
-router.get('/appointments/:month', Cors(), getApppointmentsByMonth);
-router.get('/appointments/:month/:day', Cors(), getApppointmentsByDay);
-
-router.get('/timeslots', Cors(), getAllTimeSlots);
+router.get(`${apiSlug}/timeslots`, Cors(), getAllTimeSlots);
+router.get(`${apiSlug}/timeslots/:id`, Cors(), getTimeSlotById);
 
 
 export default router;
