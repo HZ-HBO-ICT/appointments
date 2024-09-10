@@ -77,7 +77,7 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
     appointments = await prisma.appointment.findMany();
   }
 
-  const appointmentIds: string[] = appointments.map((appointment: Appointment) => `/api/v1/appointments/${appointment.id}`);
+  const appointmentIds: string[] = appointments.map((appointment: Appointment) => `/appointments/${appointment.id}`);
   //reponse
   const appointmentResponse: AppointmentResponse = {
     meta: {

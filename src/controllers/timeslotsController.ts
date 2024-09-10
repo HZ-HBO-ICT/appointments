@@ -23,7 +23,7 @@ interface TimeSlotResponse {
  */
 export async function getAllTimeSlots(req: Request, res: Response): Promise<void> {
   const timeslots: TimeSlot[] = await prisma.timeslot.findMany();
-  const timeSlotIds: string[] = timeslots.map((timeslot: TimeSlot) => `/appointments/${timeslot.id}`);
+  const timeSlotIds: string[] = timeslots.map((timeslot: TimeSlot) => `/timeslots/${timeslot.id}`);
   const timeslotResponse: TimeSlotResponse = {
     meta: {
       count: timeslots.length,

@@ -23,7 +23,7 @@ interface DatesResponse {
  */
 export async function getAllDates(req: Request, res: Response): Promise<void> {
   const dates: TheDate[] = await prisma.theDate.findMany();
-  const dateIds: string[] = dates.map((date: TheDate) => `/api/v1/dates/${date.id}`);
+  const dateIds: string[] = dates.map((date: TheDate) => `/dates/${date.id}`);
   const dateResponse: DatesResponse = {
     meta: {
       count: dates.length,
