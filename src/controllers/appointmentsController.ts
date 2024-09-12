@@ -137,3 +137,27 @@ export async function getApointmentById(req: Request, res: Response): Promise<vo
     res.status(404).send('Appointment not found');
   }
 };
+
+/**
+ * Set appointments for a year, month, and day.
+ * @param req {Request} - The Request object
+ * @param res {Response} - The Response object
+ */
+export function setAppointment(req: Request, res: Response): void {
+  console.log('setting appointment', req.body);
+  const client: number = req.body.client ? req.body.client : 0;
+  const date: number = req.body.date ? req.body.date : 0;
+  const timeslot: number = req.body.timeslot ? req.body.timeslot : 0;
+  console.log(client, date, timeslot);
+  if (client != 0 && date != 0 && timeslot != 0) {
+    res
+      .status(200)
+      .send(
+        `Hi ${client}! I made an appointment for: ${date} at ${timeslot}!`
+      );
+  } else {
+    res
+      .status(200)
+      .send('Hi love ❤️. I am trying to create an appointment but something went wrong. Please try again later.');
+  }
+}

@@ -11,12 +11,16 @@ The following routes are implemented
 |method|resource|description|
 |-|-|-|
 |GET|`/appointments/`|all the appointments in the database for the current year|
+|POST|`/appointments/`|post a new apppointment; appointment not added to the db|
 |GET|`/appointments/:id`|a specific appointment|
 |GET|`/timeslots`|all the available timeslots|
 |GET|`/timeslots/:id`|a specific timeslot|
 |GET|`/dates/`|all the dates of the year|
 |GET|`/dates/id`|a specific date|
 
+## Querystrings
+
+## JSON 
 
 For every request the following response is given
 

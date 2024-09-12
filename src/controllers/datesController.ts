@@ -27,7 +27,7 @@ export async function getAllDates(req: Request, res: Response): Promise<void> {
   const dateResponse: DatesResponse = {
     meta: {
       count: dates.length,
-      title: 'All appointments',
+      title: 'All dates',
       url: req.url
     },
     data: dateIds

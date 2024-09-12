@@ -27,7 +27,7 @@ export async function getAllTimeSlots(req: Request, res: Response): Promise<void
   const timeslotResponse: TimeSlotResponse = {
     meta: {
       count: timeslots.length,
-      title: 'All appointments',
+      title: 'All timeslots',
       url: req.url
     },
     data: timeSlotIds
