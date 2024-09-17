@@ -35,44 +35,25 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
    * Step 3 - use the numbers to filter the appointments
    */
 
-  let month: number = 0;
+  // let month: number = 0;
   let day: number = 0;
   let appointments: Appointment[];
   console.log(req.query);
 
-  if (req.query.month && !req.query.day) {
-    const tempMonth: string = req.query.month.toString();
-    if (isNaN(Number(tempMonth))) {
-      res.status(400).send('Invalid query parameters');
-      return;
-    }
-    if (Number(tempMonth) < 1 || Number(tempMonth) > 12) {
-      res.status(400).send('Invalid month');
-      return;
-    }
-    month = Number(tempMonth);
-    appointments = await getApppointmentsByMonth(month);
-    console.log(`I found: ${month}`);
-  } else if (req.query.month && req.query.day) {
-    const tempMonth: string = req.query.month.toString();
+  if (req.query.day) {
     const tempDay: string = req.query.day.toString();
 
-    if (isNaN(Number(tempMonth)) || isNaN(Number(tempDay))) {
+    if (isNaN(Number(tempDay))) {
       res.status(400).send('Invalid query parameters');
       return;
     }
-    if (Number(tempMonth) < 1 || Number(tempMonth) > 12) {
-      res.status(400).send('Invalid month');
-      return;
-    }
-    if (Number(tempDay) < 1 || Number(tempDay) > 31) {
+    if (Number(tempDay) < 1 || Number(tempDay) > 365) {
       res.status(400).send('Invalid day');
       return;
     }
-    month = Number(tempMonth);
     day = Number(tempDay);
-    appointments = await getApppointmentsByDay(month, day);
-    console.log(`I found: ${month} and ${day}`);
+    appointments = await getApppointmentsByDay(day);
+    console.log(`I found: ${day}`);
   } else {
     appointments = await prisma.appointment.findMany();
   }
@@ -91,32 +72,31 @@ export async function getAllApointments(req: Request, res: Response): Promise<vo
 }
 
 
-async function getApppointmentsByDay(month: number, day: number): Promise<Appointment[]> {
+async function getApppointmentsByDay(day: number): Promise<Appointment[]> {
+  console.log('What day is it?', day);
   const appointments: Appointment[] = await prisma.appointment.findMany(
     {
       where: {
-        theDate: {
-          month: month,
-          day: day
-        }
+        theDateId: day
       }
     }
   );
+  console.log('I found app', appointments);
   return appointments;
 }
 
-async function getApppointmentsByMonth(month: number): Promise<Appointment[]> {
-  const appointments: Appointment[] = await prisma.appointment.findMany(
-    {
-      where: {
-        theDate: {
-          month: month
-        }
-      }
-    }
-  );
-  return appointments;
-}
+// async function getApppointmentsByMonth(month: number): Promise<Appointment[]> {
+//   const appointments: Appointment[] = await prisma.appointment.findMany(
+//     {
+//       where: {
+//         theDate: {
+//           month: month
+//         }
+//       }
+//     }
+//   );
+//   return appointments;
+// }
 
 /**
  * Get an appointment by ID.
