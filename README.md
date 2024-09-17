@@ -20,6 +20,8 @@ The following routes are implemented
 
 ## Querystrings
 
+We are using this `appointments?month=9&day=9` query string option to get appointments for a specific date
+
 ## JSON 
 
 For every request the following response is given
