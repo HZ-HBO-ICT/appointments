@@ -58,5 +58,4 @@ export async function getTimeSlotById(req: Request, res: Response): Promise<void
       res.status(404).send('Timeslot not found');
     }
   }
-
 }

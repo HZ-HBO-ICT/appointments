@@ -65,8 +65,12 @@ For setting up the TS we used this [source](https://betterstack.com/community/gu
 ### Database connectivity
 In this project [Prisma](https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma) is used for Object Relation Mapping. It comes with all kind of utilities as models, seeds and migration.
 
+If you want to change somte items on the the db for yourself:
+1. Update the `scheme.prisma` if necessary
+2. Update the `seed.ts` if necessary
+3. Throw away the db
+4. Run `npx prisma migrate dev`
+
+
 ### SQLite studio
 Use [sqlite](https://sqlitestudio.pl) studio to check database changes.
-
-## Help
-Prijs?
