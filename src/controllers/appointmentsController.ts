@@ -106,15 +106,20 @@ async function getApppointmentsByDay(day: number): Promise<Appointment[]> {
  */
 export async function getApointmentById(req: Request, res: Response): Promise<void> {
   const id: number = parseInt(req.params.id);
-  const appointment: Appointment | null = await prisma.appointment.findUnique({
-    where: {
-      id: id
-    }
-  });
-  if (appointment) {
-    res.status(200).send(appointment);
+  if (isNaN(id)) {
+    res.status(400).send('Invalid ID');
+    return;
   } else {
-    res.status(404).send('Appointment not found');
+    const appointment: Appointment | null = await prisma.appointment.findUnique({
+      where: {
+        id: id
+      }
+    });
+    if (appointment) {
+      res.status(200).send(appointment);
+    } else {
+      res.status(404).send('Appointment not found');
+    }
   }
 };
 

@@ -43,14 +43,19 @@ export async function getAllDates(req: Request, res: Response): Promise<void> {
  */
 export async function getDateById(req: Request, res: Response): Promise<void> {
   const id: number = parseInt(req.params.id);
-  const date: TheDate | null = await prisma.theDate.findUnique({
-    where: {
-      id: id
-    }
-  });
-  if (date) {
-    res.status(200).send(date);
+  if (isNaN(id)) {
+    res.status(400).send('Invalid ID');
+    return;
   } else {
-    res.status(404).send('Date not found');
+    const date: TheDate | null = await prisma.theDate.findUnique({
+      where: {
+        id: id
+      }
+    });
+    if (date) {
+      res.status(200).send(date);
+    } else {
+      res.status(404).send('Date not found');
+    }
   }
 };

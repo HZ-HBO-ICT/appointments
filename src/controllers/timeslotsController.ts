@@ -43,14 +43,20 @@ export async function getAllTimeSlots(req: Request, res: Response): Promise<void
  */
 export async function getTimeSlotById(req: Request, res: Response): Promise<void> {
   const id: number = parseInt(req.params.id);
-  const timeslot: TimeSlot | null = await prisma.timeslot.findUnique({
-    where: {
-      id: id
-    }
-  });
-  if (timeslot) {
-    res.status(200).send(timeslot);
+  if (isNaN(id)) {
+    res.status(400).send('Invalid ID');
+    return;
   } else {
-    res.status(404).send('Timeslot not found');
+    const timeslot: TimeSlot | null = await prisma.timeslot.findUnique({
+      where: {
+        id: id
+      }
+    });
+    if (timeslot) {
+      res.status(200).send(timeslot);
+    } else {
+      res.status(404).send('Timeslot not found');
+    }
   }
+
 }
