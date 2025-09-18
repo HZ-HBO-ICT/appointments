@@ -4,9 +4,14 @@ import * as Dotenv from 'dotenv';
 Dotenv.config({ path: '.env' });
 import IndexRouter from './routes/index.js';
 import { errorHandler } from './middleware/errors/errorHandler.js';
+import helmet from 'helmet';
+
 
 const app: Application = Express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3010;
+
+// security middleware
+app.use(helmet());
 
 // support json encoded and url-encoded bodies, mainly used for post and update
 app.use(Express.json());
@@ -14,14 +19,16 @@ app.use(Express.urlencoded({ extended: true }));
 
 app.use('/', IndexRouter);
 
+// 404 catch-all handler (middleware)
 app.use((req: Request, res: Response, next: NextFunction) => {
   try {
-    //set header before response
-    res.status(404).send('Sorry can\'t find that!');
+    throw new Error('Resource not found', { cause: 404 });
   } catch (err) {
     next(err);
   }
 });
+
+// Error handler (last) - implemented a custom error handler
 app.use(errorHandler);
 
 app.listen(port, () => {

@@ -17,5 +17,3 @@ export function showRoutes(req: Request, res: Response): void {
     dates: '/dates'
   });
 }
-
-
