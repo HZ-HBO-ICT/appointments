@@ -2,13 +2,14 @@
 CREATE TABLE "Appointment" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "state" TEXT NOT NULL DEFAULT 'pending',
-    "name" TEXT NOT NULL,
-    "breed" TEXT NOT NULL,
+    "appointmentDate" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" TEXT NOT NULL DEFAULT 'pending',
+    "pet_id" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL,
     "timeslotId" INTEGER NOT NULL,
-    "theDateId" INTEGER NOT NULL,
+    "locationId" INTEGER NOT NULL,
     CONSTRAINT "Appointment_timeslotId_fkey" FOREIGN KEY ("timeslotId") REFERENCES "Timeslot" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Appointment_theDateId_fkey" FOREIGN KEY ("theDateId") REFERENCES "TheDate" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Appointment_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -16,14 +17,16 @@ CREATE TABLE "Timeslot" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "starttime" TEXT NOT NULL,
-    "duration" INTEGER NOT NULL
+    "endtime" TEXT NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "TheDate" (
+CREATE TABLE "Location" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "day" INTEGER NOT NULL,
-    "month" INTEGER NOT NULL,
-    "year" INTEGER NOT NULL
+    "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "zip" TEXT NOT NULL
 );
